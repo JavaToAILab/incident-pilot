@@ -4,6 +4,8 @@
 
 Alerts and log events stream in. IncidentPilot summarizes each incident as a structured record, finds similar past incidents and the matching runbook, queries metrics, logs and deploy history through tools, and streams a triage recommendation to a live dashboard. A human approves every action.
 
+New here? Start with [Meet IncidentPilot: An LLM Is a Non-Deterministic Dependency](https://medium.com/@abhinav.neo/meet-incidentpilot-an-llm-is-a-non-deterministic-dependency-97de8825c3c6), which introduces the app and the six design rules it follows.
+
 It's a real-time application on purpose: production AI is mostly integration, reliability, security and cost, and that is where Java engineers already have an edge.
 
 ## Where it's going
