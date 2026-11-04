@@ -35,7 +35,7 @@ git checkout article-05
 | Tag | Article | What it adds |
 |---|---|---|
 | [`article-03`](https://github.com/JavaToAILab/incident-pilot/tree/article-03) | [Your First LLM Call From Java, Written Like Production Code](https://medium.com/@abhinav.neo/your-first-llm-call-from-java-written-like-production-code-bfc809df2a61) | `llm-client`: the model client with timeouts, bounded retries, typed errors and token tracking |
-| [`article-05`](https://github.com/JavaToAILab/incident-pilot/tree/article-05) | Tokens and Context Windows as Capacity Planning | `context-budget`: real token counting, a context budget, and log selection that fits an incident into the window; `llm-client` now sets the context window explicitly |
+| [`article-05`](https://github.com/JavaToAILab/incident-pilot/tree/article-05) | [Tokens and Context Windows as Capacity Planning](https://medium.com/@abhinav.neo/tokens-and-context-windows-as-capacity-planning-1626d8652014) | `context-budget`: real token counting, a context budget, and log selection that fits an incident into the window; `llm-client` now sets the context window explicitly |
 | `article-07` | Structured Output With Java Records | The `IncidentSummary` record |
 | `article-09` | Real Time: Streaming Alerts In and Answers Out | Kafka ingestion and server-sent events |
 | … | | The rest of the roadmap: RAG over runbooks, tools, MCP, agents, evals, observability |
