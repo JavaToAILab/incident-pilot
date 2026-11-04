@@ -29,13 +29,13 @@ Each build article ends with a git tag. Check out the tag to get exactly the cod
 ```bash
 git clone https://github.com/JavaToAILab/incident-pilot.git
 cd incident-pilot
-git checkout article-03
+git checkout article-05
 ```
 
 | Tag | Article | What it adds |
 |---|---|---|
-| `article-03` | [Your First LLM Call From Java, Written Like Production Code](https://medium.com/@abhinav.neo/your-first-llm-call-from-java-written-like-production-code-bfc809df2a61) | `llm-client`: the model client with timeouts, bounded retries, typed errors and token tracking |
-| `article-05` | Tokens and Context Windows as Capacity Planning | A context budget for fitting alerts and logs into a prompt |
+| [`article-03`](https://github.com/JavaToAILab/incident-pilot/tree/article-03) | [Your First LLM Call From Java, Written Like Production Code](https://medium.com/@abhinav.neo/your-first-llm-call-from-java-written-like-production-code-bfc809df2a61) | `llm-client`: the model client with timeouts, bounded retries, typed errors and token tracking |
+| [`article-05`](https://github.com/JavaToAILab/incident-pilot/tree/article-05) | Tokens and Context Windows as Capacity Planning | `context-budget`: real token counting, a context budget, and log selection that fits an incident into the window; `llm-client` now sets the context window explicitly |
 | `article-07` | Structured Output With Java Records | The `IncidentSummary` record |
 | `article-09` | Real Time: Streaming Alerts In and Answers Out | Kafka ingestion and server-sent events |
 | … | | The rest of the roadmap: RAG over runbooks, tools, MCP, agents, evals, observability |
@@ -47,6 +47,7 @@ Future tags are planned, not yet published. This table is updated as each articl
 | Module | Since | Job |
 |---|---|---|
 | `llm-client` | Article 3 | The interface the rest of the app depends on, and an Ollama implementation built on the JDK `HttpClient` |
+| `context-budget` | Article 5 | Token counting (heuristic and a real BPE tokenizer), a context budget, and an incident context builder that collapses repeated log messages and keeps errors and their causes first |
 
 ## Run it
 
@@ -55,9 +56,11 @@ Requirements: Java 21, Maven, and [Ollama](https://ollama.com) for a local model
 ```bash
 ollama pull llama3.2
 mvn test                                   # runs against a fake model server, no Ollama needed
-mvn -q -pl llm-client compile exec:java -Dexec.args="Summarize: payment-service p99 latency jumped to 4s after deploy 1.42"
+mvn -q install -DskipTests                 # build all modules once
+mvn -q -pl llm-client exec:java -Dexec.args="Summarize: payment-service p99 latency jumped to 4s after deploy 1.42"
+mvn -q -pl context-budget exec:java        # token report on a sample incident: chars per token, what fits in 4K / 8K / 32K
 ```
 
-Configuration is through environment variables (`LLM_BASE_URL`, `LLM_MODEL`, timeouts, retry attempts); see `LlmConfig`.
+Configuration is through environment variables (`LLM_BASE_URL`, `LLM_MODEL`, `LLM_CONTEXT_WINDOW`, timeouts, retry attempts); see `LlmConfig`.
 
 Part of [JavaToAILab](https://github.com/JavaToAILab). Questions, corrections and "you got this wrong" are welcome as issues.

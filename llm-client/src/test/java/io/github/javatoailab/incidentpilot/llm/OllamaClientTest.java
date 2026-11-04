@@ -91,6 +91,7 @@ class OllamaClientTest {
         assertTrue(body.contains("\"role\":\"system\""), body);
         assertTrue(body.contains("\"num_predict\":64"), body);
         assertTrue(body.contains("\"temperature\":0.0"), body);
+        assertTrue(body.contains("\"num_ctx\":8192"), "context window must be sent explicitly: " + body);
     }
 
     @Test

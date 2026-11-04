@@ -105,7 +105,10 @@ public final class OllamaClient implements LlmClient {
         messages.addObject().put("role", "user").put("content", request.userMessage());
         root.putObject("options")
                 .put("temperature", request.temperature())
-                .put("num_predict", request.maxTokens());
+                .put("num_predict", request.maxTokens())
+                // Without this, Ollama uses its own default context size and can silently
+                // truncate long prompts. Set it explicitly, every call.
+                .put("num_ctx", config.contextWindow());
         return root.toString();
     }
 

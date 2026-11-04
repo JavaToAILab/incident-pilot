@@ -6,13 +6,14 @@
 
     <groupId>io.github.javatoailab</groupId>
     <artifactId>incident-pilot</artifactId>
-    <version>0.3.0</version>
+    <version>0.5.0</version>
     <packaging>pom</packaging>
     <name>incident-pilot</name>
     <description>An AI incident copilot for a microservices platform, built one module per Java to AI article</description>
 
     <modules>
         <module>llm-client</module>
+        <module>context-budget</module>
     </modules>
 
     <properties>
@@ -20,6 +21,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <jackson.version>2.18.2</jackson.version>
         <junit.version>5.11.4</junit.version>
+        <jtokkit.version>1.1.0</jtokkit.version>
     </properties>
 
     <dependencyManagement>
@@ -28,6 +30,11 @@
                 <groupId>com.fasterxml.jackson.core</groupId>
                 <artifactId>jackson-databind</artifactId>
                 <version>${jackson.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.knuddels</groupId>
+                <artifactId>jtokkit</artifactId>
+                <version>${jtokkit.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.junit.jupiter</groupId>
