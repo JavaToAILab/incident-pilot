@@ -1,0 +1,3 @@
+# Prompts are hashed; keep their line endings identical on every OS.
+*.prompt text eol=lf
+*.lock   text eol=lf

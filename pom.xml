@@ -6,7 +6,7 @@
 
     <groupId>io.github.javatoailab</groupId>
     <artifactId>incident-pilot</artifactId>
-    <version>0.5.0</version>
+    <version>0.6.0</version>
     <packaging>pom</packaging>
     <name>incident-pilot</name>
     <description>An AI incident copilot for a microservices platform, built one module per Java to AI article</description>
@@ -14,6 +14,7 @@
     <modules>
         <module>llm-client</module>
         <module>context-budget</module>
+        <module>prompt-contracts</module>
     </modules>
 
     <properties>

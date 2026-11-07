@@ -21,7 +21,12 @@ public record IncidentContext(
 
     /** A deterministic-leaning request whose reply is capped at the budget's output reservation. */
     public ChatRequest toChatRequest() {
-        return new ChatRequest(systemPrompt, userMessage, 0.0, budget.reservedForOutput());
+        return toChatRequest(null);
+    }
+
+    /** Same, tagged with the versioned prompt that produced the system prompt, so every call is traceable. */
+    public ChatRequest toChatRequest(String promptRef) {
+        return new ChatRequest(systemPrompt, userMessage, 0.0, budget.reservedForOutput(), promptRef);
     }
 
     public boolean droppedAnything() {

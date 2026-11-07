@@ -50,8 +50,9 @@ public final class OllamaClient implements LlmClient {
                 // One structured line per call. Note what is NOT logged: the prompt and the reply,
                 // which may contain customer data.
                 LOG.log(System.Logger.Level.INFO,
-                        "llm.call model={0} attempts={1} latencyMs={2} inputTokens={3} outputTokens={4} stop={5}",
-                        response.model(), response.attempts(), response.latency().toMillis(),
+                        "llm.call model={0} prompt={1} attempts={2} latencyMs={3} inputTokens={4} outputTokens={5} stop={6}",
+                        response.model(), request.promptRef() == null ? "-" : request.promptRef(),
+                        response.attempts(), response.latency().toMillis(),
                         response.inputTokens(), response.outputTokens(), response.stopReason());
                 return response;
             } catch (LlmException e) {

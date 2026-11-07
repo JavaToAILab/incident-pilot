@@ -1,0 +1,6 @@
+# Released prompts. A released prompt never changes: to change one, add the next version,
+# then run `mvn -q -pl prompt-contracts exec:java -Dexec.args=--lock` and add its line here.
+#
+# id                 version  sha256
+incident-summary     1    3d7ceb827c91cb875c74d80deda17fa4fec1f70d1ad6d0d31edb09fc35ecaa35
+incident-summary     2    edd77dee88e4fb843b5b4723bb5c01f3dfa613109530eaadf997d7b88c2d62b3

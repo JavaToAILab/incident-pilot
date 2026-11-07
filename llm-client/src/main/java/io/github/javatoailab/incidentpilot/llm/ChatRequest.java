@@ -9,8 +9,11 @@ import java.util.Objects;
  * @param userMessage  the actual question or task
  * @param temperature  0.0 = most repeatable; higher = more varied
  * @param maxTokens    hard cap on the length of the reply, which also caps its cost
+ * @param promptRef    which versioned prompt produced the system prompt, e.g.
+ *                     {@code incident-summary@v2#1a2b3c4d}; logged with every call (may be null)
  */
-public record ChatRequest(String systemPrompt, String userMessage, double temperature, int maxTokens) {
+public record ChatRequest(String systemPrompt, String userMessage, double temperature, int maxTokens,
+                          String promptRef) {
 
     public ChatRequest {
         if (userMessage == null || userMessage.isBlank()) {
@@ -22,6 +25,11 @@ public record ChatRequest(String systemPrompt, String userMessage, double temper
         if (maxTokens <= 0) {
             throw new IllegalArgumentException("maxTokens must be positive");
         }
+    }
+
+    /** Kept so code written before prompts were versioned (Articles 3 and 5) still compiles. */
+    public ChatRequest(String systemPrompt, String userMessage, double temperature, int maxTokens) {
+        this(systemPrompt, userMessage, temperature, maxTokens, null);
     }
 
     /** A sensible production default: deterministic-leaning and length-capped. */
