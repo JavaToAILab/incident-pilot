@@ -95,6 +95,16 @@ class OllamaClientTest {
     }
 
     @Test
+    void sendsTheOutputSchemaAsOllamaFormatOnlyWhenOneIsSet() {
+        String schema = "{\"type\":\"object\",\"properties\":{\"severity\":{\"type\":\"string\"}}}";
+        client(1, Duration.ofSeconds(5)).chat(ChatRequest.of(null, "Hi").withOutputSchema(schema));
+        assertTrue(lastBody.get().contains("\"format\":" + schema), lastBody.get());
+
+        client(1, Duration.ofSeconds(5)).chat(ChatRequest.of(null, "Hi"));
+        assertFalse(lastBody.get().contains("\"format\""), lastBody.get());
+    }
+
+    @Test
     void retriesTransientFailuresThenSucceeds() {
         replies.add(new Reply(503, "{\"error\":\"server busy\"}", 0));
         replies.add(new Reply(429, "{\"error\":\"too many requests\"}", 0));

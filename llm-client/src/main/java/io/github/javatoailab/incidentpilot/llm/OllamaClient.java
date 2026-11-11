@@ -50,8 +50,9 @@ public final class OllamaClient implements LlmClient {
                 // One structured line per call. Note what is NOT logged: the prompt and the reply,
                 // which may contain customer data.
                 LOG.log(System.Logger.Level.INFO,
-                        "llm.call model={0} prompt={1} attempts={2} latencyMs={3} inputTokens={4} outputTokens={5} stop={6}",
+                        "llm.call model={0} prompt={1} schema={2} attempts={3} latencyMs={4} inputTokens={5} outputTokens={6} stop={7}",
                         response.model(), request.promptRef() == null ? "-" : request.promptRef(),
+                        request.outputSchema() == null ? "no" : "yes",
                         response.attempts(), response.latency().toMillis(),
                         response.inputTokens(), response.outputTokens(), response.stopReason());
                 return response;
@@ -104,6 +105,15 @@ public final class OllamaClient implements LlmClient {
             messages.addObject().put("role", "system").put("content", request.systemPrompt());
         }
         messages.addObject().put("role", "user").put("content", request.userMessage());
+        if (request.outputSchema() != null) {
+            // Ollama constrains generation to this schema ("structured outputs"). That fixes the
+            // syntax of the reply. It does not make the content correct.
+            try {
+                root.set("format", json.readTree(request.outputSchema()));
+            } catch (IOException e) {
+                throw new LlmException("outputSchema is not valid JSON: " + e.getMessage(), false, -1, e);
+            }
+        }
         root.putObject("options")
                 .put("temperature", request.temperature())
                 .put("num_predict", request.maxTokens())

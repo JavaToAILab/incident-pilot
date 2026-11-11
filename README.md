@@ -29,7 +29,7 @@ Each build article ends with a git tag. Check out the tag to get exactly the cod
 ```bash
 git clone https://github.com/JavaToAILab/incident-pilot.git
 cd incident-pilot
-git checkout article-06
+git checkout article-07
 ```
 
 | Tag | Article | What it adds |
@@ -37,7 +37,7 @@ git checkout article-06
 | [`article-03`](https://github.com/JavaToAILab/incident-pilot/tree/article-03) | [Your First LLM Call From Java, Written Like Production Code](https://medium.com/@abhinav.neo/your-first-llm-call-from-java-written-like-production-code-bfc809df2a61) | `llm-client`: the model client with timeouts, bounded retries, typed errors and token tracking |
 | [`article-05`](https://github.com/JavaToAILab/incident-pilot/tree/article-05) | [Tokens and Context Windows as Capacity Planning](https://medium.com/@abhinav.neo/tokens-and-context-windows-as-capacity-planning-1626d8652014) | `context-budget`: real token counting, a context budget, and log selection that fits an incident into the window; `llm-client` now sets the context window explicitly |
 | [`article-06`](https://github.com/JavaToAILab/incident-pilot/tree/article-06) | [Prompts Are API Contracts](https://medium.com/@abhinav.neo/prompts-are-api-contracts-2af2b2e8a944) | `prompt-contracts`: versioned, immutable prompt files with declared inputs, a lock file, and a prompt ref logged with every model call |
-| `article-07` | Structured Output With Java Records | The `IncidentSummary` record |
+| [`article-07`](https://github.com/JavaToAILab/incident-pilot/tree/article-07) | Structured Output With Java Records | `structured-output`: the model's reply parsed into an `IncidentSummary` record, checked against the logs it came from, repaired once or rejected |
 | `article-09` | Real Time: Streaming Alerts In and Answers Out | Kafka ingestion and server-sent events |
 | … | | The rest of the roadmap: RAG over runbooks, tools, MCP, agents, evals, observability |
 
@@ -50,6 +50,7 @@ Future tags are planned, not yet published. This table is updated as each articl
 | `llm-client` | Article 3 | The interface the rest of the app depends on, and an Ollama implementation built on the JDK `HttpClient` |
 | `context-budget` | Article 5 | Token counting (heuristic and a real BPE tokenizer), a context budget, and an incident context builder that collapses repeated log messages and keeps errors and their causes first |
 | `prompt-contracts` | Article 6 | Prompt templates as versioned contracts: declared variables checked at load and render time, released versions locked by SHA-256, and a ref such as `incident-summary@v2#edd77dee` on every request |
+| `structured-output` | Article 7 | A JSON contract generated from a Java record (schema out, strict parser in), checks against the input (quoted evidence must really be in the logs), one repair call, and a sealed outcome type: accepted, rejected or unavailable |
 
 ## Changing a prompt
 
@@ -73,6 +74,8 @@ mvn -q install -DskipTests                 # build all modules once
 mvn -q -pl llm-client exec:java -Dexec.args="Summarize: payment-service p99 latency jumped to 4s after deploy 1.42"
 mvn -q -pl context-budget exec:java        # token report on a sample incident: chars per token, what fits in 4K / 8K / 32K
 mvn -q -pl prompt-contracts exec:java      # every released prompt version: inputs, token cost, and the rendered system prompt
+mvn -q -pl structured-output exec:java     # common ways a reply breaks the JSON contract, and what the pipeline does with each
+mvn -q -pl structured-output exec:java -Dexec.args="--live 20 0.7"   # 20 real calls per mode to your local model, outcomes counted
 ```
 
 Configuration is through environment variables (`LLM_BASE_URL`, `LLM_MODEL`, `LLM_CONTEXT_WINDOW`, timeouts, retry attempts); see `LlmConfig`.

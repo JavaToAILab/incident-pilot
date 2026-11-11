@@ -4,3 +4,4 @@
 # id                 version  sha256
 incident-summary     1    3d7ceb827c91cb875c74d80deda17fa4fec1f70d1ad6d0d31edb09fc35ecaa35
 incident-summary     2    edd77dee88e4fb843b5b4723bb5c01f3dfa613109530eaadf997d7b88c2d62b3
+incident-summary-repair 1    c014fb9563f5b1992bf2550e114c0947f1f0d729ce3adc0bacedc84d302d5ad5

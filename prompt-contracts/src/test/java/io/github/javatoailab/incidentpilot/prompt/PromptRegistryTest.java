@@ -55,7 +55,8 @@ class PromptRegistryTest {
     @Test
     void lockLinesListEveryVersion() {
         List<String> lines = PromptRegistry.lockLines(Path.of("src/main/resources/prompts"));
-        assertEquals(2, lines.size());
-        assertTrue(lines.get(0).startsWith("incident-summary"));
+        assertTrue(lines.stream().anyMatch(l -> l.matches("incident-summary\\s+1\\s+[0-9a-f]{64}")), lines.toString());
+        assertTrue(lines.stream().anyMatch(l -> l.matches("incident-summary\\s+2\\s+[0-9a-f]{64}")), lines.toString());
+        assertTrue(lines.stream().allMatch(l -> l.matches("[a-z-]+\\s+\\d+\\s+[0-9a-f]{64}")), lines.toString());
     }
 }
